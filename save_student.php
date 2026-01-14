@@ -1,21 +1,21 @@
 <?php
 include 'connect.php';
+if (isset($_POST['submit'])) {
 
-$name = $_POST['name'];
-$age = $_POST['age'];
-$course = $_POST['course'];
-$year = $_POST['year'];
-$email = $_POST['email'];
+    $name   = $conn->real_escape_string($_POST['name']);
+    $age    = $conn->real_escape_string($_POST['age']);
+    $course = $conn->real_escape_string($_POST['course']);
+    $year   = $conn->real_escape_string($_POST['year']);
+    $email  = $conn->real_escape_string($_POST['email']);
 
-$sql = "INSERT INTO students (name, age, course, year_of_study, email)
-        VALUES ('$name', '$age', '$course', '$year', '$email')";
+    $sql = "INSERT INTO students (name, age, course, year, email) 
+            VALUES ('$name', '$age', '$course', '$year', '$email')";
 
-if ($conn->query($sql) === TRUE) {
-    echo "Student data saved successfully.<br>";
-    echo "<a href='index.html'>Go Back</a>";
-} else {
-    echo "Error: " . $conn->error;
+    if ($conn->query($sql) === TRUE) {
+        header("Location: view_students.php");
+        exit();
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
 }
-
-$conn->close();
 ?>
